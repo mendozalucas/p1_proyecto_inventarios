@@ -1,7 +1,5 @@
-import Head from 'next/head';
-/* import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
-import Home from './pages/home.js'; */
-import Modal from './modal';
+import ModalLogin from '../components/modal_login';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'Next.js',
@@ -11,66 +9,73 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-
-      <meta charSet="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <title>Bootstrap demo</title>
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Bootstrap demo</title>
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body>
         <header className="p-3 text-bg-dark">
-        <div className="container">
-          <div className="d-flex flex-wrap align-items-center justify-content-center">
-            <div className="text-end justify-content-center">
-              <button
-                type="button"
-                className="btn btn-outline-light me-2"
-                id="loginButton"
-                data-bs-toggle="modal"
-                data-bs-target="#loginModal"
-              >
-                Login
-              </button>
-              <button
-                type="button"
-                className="btn btn-warning"
-                id="lightbulbButton"
-              >
-                <img src="lightbulb.svg" alt="User Example" />
-              </button>
-              <span className="tip-message ms-3">
-                Try: User, admin. Password, admin
-              </span>
+          <div className="container">
+            <div className="d-flex flex-wrap align-items-center justify-content-center">
+              <div className="text-end justify-content-center">
+                <button
+                  type="button"
+                  className="btn btn-outline-light me-2"
+                  id="loginButton"
+                  data-bs-toggle="modal"
+                  data-bs-target="#loginModal"
+                >
+                  Login
+                </button>
+                <button type="button" className="btn btn-warning" id="lightbulbButton">
+                  <img src="lightbulb.svg" alt="User Example" />
+                </button>
+                <span className="tip-message ms-3">Try: User, admin. Password, admin</span>
+              </div>
             </div>
           </div>
-        </div>
-      </header>
-      {/* Modal (Client Component) */}
-      <Modal />
-      
-      <main className="d-flex flex-nowrap">
+        </header>
+
+        {/* Modal (Client Component) */}
+        <ModalLogin />
+
+        <main className="d-flex flex-nowrap">
           <div
             className="d-flex flex-column flex-shrink-0 p-3 text-bg-dark sidebar"
             style={{ width: 250, height: 810 }}
           >
             <hr />
-            <ul className="nav nav-pills flex-column mb-auto">
-              <li className="nav-item">
-                {/*link a otras páginas*/}
-                  <img src="boxes.svg" alt="Product List" />
-                  Product List
-              </li>
-              <li>
-                {/*link a otras páginas*/}
-                  <img src="box.svg" alt="Update Stock" />
-                  Update Stock
-              </li>
-              <li>
-                <img src="database-add.svg" alt="Add product" />
-                Add product
-              </li>
-            </ul>
+            <nav>
+              <ul className="nav nav-pills flex-column mb-auto">
+                <li className="nav-item">
+                  <Link href="/">
+                    <span>📦 Product List</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/update_stock">
+                    <span>📊 Update Stock</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/add_product">
+                    <span>➕ Add Product</span>
+                  </Link>
+                </li>
+              </ul>
+            </nav>
             <hr />
           </div>
-          {children}
+
+          {/* Contenido dinámico */}
+          <div style={{ flex: 1, padding: "20px" }}>{children}</div>
         </main>
       </body>
     </html>
