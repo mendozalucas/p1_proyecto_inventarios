@@ -21,13 +21,6 @@
 .svg-to-red {
     filter: invert(22%) sepia(100%) saturate(7471%) hue-rotate(0deg) brightness(101%) contrast(107%);
 }
-.sidebar {
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1030;
-}
 .tip-message {
     display: none;
     animation: slide-in 1s forwards;
@@ -76,6 +69,7 @@ header {
 main {
     margin-left: 280px; /* Ajusta el margen izquierdo para evitar que el contenido se superponga con la barra lateral */
 }
+/* table styles*/
 .modern-table {
 border-radius: 10px;
 overflow: hidden;
@@ -99,4 +93,29 @@ background: #f8f9fa;
 .invisible-button {
     border: none;
     background: none;
+}
+/* sidebar styles */
+.sidebar {
+    width: 320px;
+    height: 100vh;
+    background-color: #1e1e2f;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-item .nav-link {
+    padding: 12px;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.nav-item .nav-link:hover {
+background: #ffcf86;
+}
+
+.nav-item.active .nav-link {
+background: #ff9800;
+font-weight: bold;
+color: #1e1e2f !important;
 }

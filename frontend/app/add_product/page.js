@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 /*import { getMensaje } from "../apicalls/apicalls";*/
 
+
 export default function AddProduct() {
   return (
     <>
@@ -11,9 +12,11 @@ export default function AddProduct() {
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
             crossOrigin="anonymous"
         />
-        <div className="container mt-5">
+        <h1>Add Product</h1>
+        <hr />
+        <div className="container mt-3">
             <form action="#">
-                <div className="row g-3" style={{ marginTop: 30 }}>
+                <div className="row g-3">
                     <div className="col-md-6">
                         <div className="form-group">
                         <label className="d-block fs-14 text-black mb-2">Code</label>

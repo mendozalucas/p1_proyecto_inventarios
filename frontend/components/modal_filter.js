@@ -24,7 +24,7 @@ export default function ModalFilter() {
       <div className="modal-dialog modal-lg modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title" id="filterModalLabel">
+            <h5 className="modal-title" id="filterModalLabel" style={{ Height: 40 }}>
               Filter
             </h5>
             <button
