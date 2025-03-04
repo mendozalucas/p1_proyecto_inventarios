@@ -59,10 +59,11 @@ export default function ModalFilter() {
                       Category
                     </label>
                     <select className="form-control" style={{ fontSize: 15 }}>
-                      <option value={0}>All</option>
+                      <option value={0}>Other</option>
                       <option value={1}>Peripheral</option>
-                      <option value={2}>Hardware</option>
-                      <option value={3}>Monitor</option>
+                      <option value={2}>Microprocessor</option>
+                      <option value={3}>GPU</option>
+                      <option value={4}>Motherboard</option>
                     </select>
                   </div>
                 </div>
