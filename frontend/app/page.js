@@ -70,28 +70,6 @@ export default function Home() {
               <td>40</td>
               <td>800</td>
             </tr>
-            <tr>
-              <th scope="row">1010</th>
-              <td>Peripherals</td>
-              <td>Cougar</td>
-              <td>Core</td>
-              <td>Black</td>
-              <td>20</td>
-              <td>5</td>
-              <td>40</td>
-              <td>800</td>
-            </tr>
-            <tr>
-              <th scope="row">1010</th>
-              <td>Peripherals</td>
-              <td>Cougar</td>
-              <td>Core</td>
-              <td>Black</td>
-              <td>20</td>
-              <td>5</td>
-              <td>40</td>
-              <td>800</td>
-            </tr>
           </tbody>
         </table>
       </div>

@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from config import get_db_connection
 
@@ -18,5 +18,66 @@ def test_db():
     else:
         return jsonify({"error": "No se pudo conectar a MySQL"}), 500
 
+@app.route("/filter", methods=["POST"])
+def filter_products():
+    data = request.json
+    print(data)
+    query = "SELECT * FROM products WHERE 1=1"
+    params = []
+
+    if data["brand"]:
+        query += " AND brand_product = %s"
+        params.append(data["brand"])
+
+    if int(data["category"]) == 1:
+        query += " AND category_product = %s"
+        params.append('Other')
+    elif int(data["category"]) == 2:
+        query += " AND category_product = %s"
+        params.append('Peripheral')
+    elif int(data["category"]) == 3:
+        query += " AND category_product = %s"
+        params.append('Microprocessor')
+    elif int(data["category"]) == 4:
+        query += " AND category_product = %s"
+        params.append('GPU')
+
+    if data["model"]:
+        query += " AND model_product = %s"
+        params.append(data["model"])
+
+    if data["colors"]:
+        query += f" AND color_product IN ({', '.join(['%s'] * len(data['colors']))})"
+        params.extend(data["colors"])
+
+    if data["minPrice"]:
+        query += " AND price_product >= %s"
+        params.append(data["minPrice"])
+
+    if data["maxPrice"]:
+        query += " AND price_product <= %s"
+        params.append(data["maxPrice"])
+        
+    if int(data["availability"]) == 0:
+        query += " AND current_stock >= %s"
+        params.append(0)
+    elif int(data["availability"]) == 1:
+        query += " AND current_stock > %s"
+        params.append(0)
+    elif int(data["availability"]) == 2:
+        query += " AND current_stock = %s"
+        params.append(0)
+
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)  # Retrieve results as dictionaries
+    cursor.execute(query, params)  # Execute the query with the parameters
+    # It replaces the %s with the values in the list params. It prevents SQL injections
+    
+    results = cursor.fetchall()  # Fetch all results
+
+    connection.close()
+    return jsonify(results)
+
+
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)  # Escucha en todas las IPs
+    app.run(debug=True, host='0.0.0.0', port=5000)  # listen on all IPs on port 5000
