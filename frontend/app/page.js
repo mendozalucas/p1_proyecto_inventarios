@@ -1,9 +1,11 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ModalFilter from "../components/modal_filter";
 import FilterSearch from "../components/filter_search";
 
 export default function Home() {
+  const [products, setProducts] = useState([]);
+
   useEffect(() => {
     const minPriceInput = document.getElementById('minPrice');
     const maxPriceInput = document.getElementById('maxPrice');
@@ -31,6 +33,14 @@ export default function Home() {
     };
   }, []);
 
+  // Initial fetch to get all products
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000/all_products")
+    .then((response) => response.json())
+    .then((data) => setProducts(data))
+    .catch((error) => console.error("Error al obtener productos:", error));
+  }, []);
+
   return (
     <>
       <link
@@ -39,39 +49,43 @@ export default function Home() {
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
         crossOrigin="anonymous"
       />
-      <ModalFilter />
+      <ModalFilter setProducts={setProducts} />
       <div className="flex-grow-1 p-3">
         <h1>Product List</h1>
         <hr />
         <FilterSearch />
-        <table className="table table-hover modern-table text-secondary">
-          <thead>
-            <tr>
-              <th scope="col">Code</th>
-              <th scope="col">Type</th>
-              <th scope="col">Brand</th>
-              <th scope="col">Model</th>
-              <th scope="col">Color</th>
-              <th scope="col">Stock</th>
-              <th scope="col">Stock Alert</th>
-              <th scope="col">Price Per Unit</th>
-              <th scope="col">Total Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1010</th>
-              <td>Peripherals</td>
-              <td>Cougar</td>
-              <td>Core</td>
-              <td>Black</td>
-              <td>20</td>
-              <td>5</td>
-              <td>40</td>
-              <td>800</td>
-            </tr>
-          </tbody>
-        </table>
+        <div style={{ maxHeight: "500px", overflowY: "auto", border: "1px solid #ddd" }}>
+          <table className="table table-hover modern-table text-secondary">
+            <thead className="table-dark">
+              <tr>
+                <th scope="col">Code</th>
+                <th scope="col">Category</th>
+                <th scope="col">Brand</th>
+                <th scope="col">Model</th>
+                <th scope="col">Color</th>
+                <th scope="col">Stock</th>
+                <th scope="col">Stock Alert</th>
+                <th scope="col">Price Per Unit</th>
+                <th scope="col">Total Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.map((product) => (
+                <tr key={product.code_product}>
+                  <th scope="row">{product.code_product}</th>
+                  <td>{product.category_product}</td>
+                  <td>{product.brand_product}</td>
+                  <td>{product.model_product}</td>
+                  <td>{product.color_product}</td>
+                  <td>{product.current_stock}</td>
+                  <td>{product.alert_stock}</td>
+                  <td>${parseFloat(product.price_product).toFixed(2)}</td>
+                  <td>${(product.current_stock * parseFloat(product.price_product)).toFixed(2)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   );

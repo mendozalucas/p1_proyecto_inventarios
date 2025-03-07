@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 
-export default function ModalFilter() {
+export default function ModalFilter( {setProducts}) {
   useEffect(() => {
     // Dynamically import the Bootstrap JavaScript
     import('bootstrap/dist/js/bootstrap.bundle.min.js')
@@ -43,7 +43,7 @@ export default function ModalFilter() {
   // Enviar los datos al backend Flask
   const handleSubmit = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:5000/filter", {
+      const response = await fetch("http://127.0.0.1:5000/filter_products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -53,6 +53,7 @@ export default function ModalFilter() {
 
       const data = await response.json();
       console.log("Productos filtrados:", data);
+      setProducts(data); // Send the filtered products to the parent component
     } catch (error) {
       console.error("Error al enviar los filtros:", error);
     }

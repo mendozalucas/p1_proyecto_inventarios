@@ -18,7 +18,16 @@ def test_db():
     else:
         return jsonify({"error": "No se pudo conectar a MySQL"}), 500
 
-@app.route("/filter", methods=["POST"])
+@app.route("/all_products", methods=["GET"])
+def get_all_products():
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM products")  # 🔹 Obtiene TODOS los productos sin filtros
+    results = cursor.fetchall()
+    connection.close()
+    return jsonify(results)
+
+@app.route("/filter_products", methods=["POST"])
 def filter_products():
     data = request.json
     print(data)
@@ -78,6 +87,24 @@ def filter_products():
     connection.close()
     return jsonify(results)
 
+@app.route("/update_stock", methods=["POST"])
+def update_stock():
+    try:
+        data = request.json.get("updates", [])
+
+        connection = get_db_connection()
+        cursor = connection.cursor()
+
+        for update in data:
+            query = "UPDATE products SET current_stock = %s WHERE code_product = %s"
+            cursor.execute(query, (update["new_stock"], update["code_product"]))
+
+        connection.commit()
+        connection.close()
+    except Exception as e:
+        print(e)
+    else:
+        return jsonify({"message": "Stock actualizado exitosamente"}), 200
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)  # listen on all IPs on port 5000
