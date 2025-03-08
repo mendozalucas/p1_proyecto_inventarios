@@ -14,6 +14,8 @@ export default function AddProduct() {
     }
 
     const [successMessage, setSuccessMessage] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(false);
+    const [errorMessage2, setErrorMessage2] = useState(false);
 
     const [formData, setFormData] = useState({        
         code: 0,
@@ -48,7 +50,15 @@ export default function AddProduct() {
             formData.price === 0 ||
             formData.stock === 0
           ) {
-            alert("All fields are required: Numbers cannot be negative and category must be different from \"-\"");
+            setErrorMessage(true); // Show alert
+            setTimeout(() => {
+                const alertElement = document.querySelector(".alert");
+                if (alertElement) {
+                    alertElement.classList.remove("slide-in");
+                    alertElement.classList.add("slide-out");
+                    setTimeout(() => setErrorMessage(false), 500); // hid alert after 500ms
+                }
+            }, 3000);
             return;
           }
         try {
@@ -61,15 +71,29 @@ export default function AddProduct() {
             });
         
             const message = await response.json();
-            console.log(message);
-            //setFormData(default_formdata);
-
-            setSuccessMessage(true); // Show alert
-            setTimeout(() => {
-                document.querySelector(".alert").classList.remove("slide-in");
-                document.querySelector(".alert").classList.add("slide-out");
-                setTimeout(() => setSuccessMessage(false), 500); // Hide the alert after the slide-out animation
-              }, 3000); // Hide the alert after 3 seconds
+            if ("error" in message) { 
+                setErrorMessage2(true); // Show alert
+                setTimeout(() => {
+                    const alertElement = document.querySelector(".alert");
+                    if (alertElement) {
+                        alertElement.classList.remove("slide-in");
+                        alertElement.classList.add("slide-out");
+                        setTimeout(() => setErrorMessage2(false), 500); // hid alert after 500ms
+                    }
+                }, 3000);
+            }
+            else {
+                setFormData(default_formdata);
+                setSuccessMessage(true); // Show alert
+                setTimeout(() => {
+                    const alertElement = document.querySelector(".alert");
+                    if (alertElement) {
+                        alertElement.classList.remove("slide-in");
+                        alertElement.classList.add("slide-out");
+                        setTimeout(() => setSuccessMessage(false), 500); // hid alert after 500ms
+                    }
+                }, 3000);
+            }
         } catch (error) {
             console.error("Error trying to create the product:", error);
         }
@@ -227,10 +251,22 @@ export default function AddProduct() {
             </div>
             </form>
             {successMessage && (
-            <div className="alert alert-success mt-3 slide-in" role="alert">
-                <img src="tick-circle-svgrepo-com.svg" alt="Success" className="me-2" />
-                Product created successfully!
-            </div>
+                <div className="alert alert-success mt-3 slide-in" role="alert">
+                    <img src="tick-circle-svgrepo-com.svg" alt="Success" className="me-2" />
+                    Product created successfully!
+                </div>
+            )}
+            {errorMessage && (
+                <div className="alert alert-danger mt-3 slide-in" role="alert">
+                    <img src="cross-circle-svgrepo-com.svg" alt="Error" className="me-2" />
+                    Please fill in all required fields.
+                </div>
+            )}
+            {errorMessage2 && (
+                <div className="alert alert-danger mt-3 slide-in" role="alert">
+                    <img src="cross-circle-svgrepo-com.svg" alt="Error" className="me-2" />
+                    A product with the same code already exists.
+                </div>
             )}
         </div>
         </>

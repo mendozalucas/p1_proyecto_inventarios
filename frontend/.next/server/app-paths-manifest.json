@@ -1,5 +1,5 @@
 {
   "/page": "app/page.js",
-  "/update_stock/page": "app/update_stock/page.js",
-  "/add_product/page": "app/add_product/page.js"
+  "/add_product/page": "app/add_product/page.js",
+  "/update_stock/page": "app/update_stock/page.js"
 }

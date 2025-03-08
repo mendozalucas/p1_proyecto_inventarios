@@ -184,7 +184,7 @@ export default function ModalFilter( {setProducts}) {
                   </button>
                 </div>
                 <div className="col-lg-6 mb-3">
-                  <button type="button" className="btn btn-primary w-100" onClick={handleSubmit}>
+                  <button type="button" className="btn btn-primary w-100" onClick={handleSubmit} data-bs-dismiss="modal">
                     Filter
                   </button>
                 </div>

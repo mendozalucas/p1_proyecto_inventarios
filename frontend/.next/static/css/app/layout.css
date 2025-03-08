@@ -127,7 +127,7 @@ color: #1e1e2f !important;
 .alert {
     position: fixed;
     top: 20px;
-    right: -300px; /* Start off-screen */
+    right: -1045px; /* Start off-screen */
     width: 250px;
     padding: 15px;
     border-radius: 8px;
@@ -137,17 +137,38 @@ color: #1e1e2f !important;
     color: #155724;
     transition: right 0.5s ease-in-out;
 }
-
 .alert img {
     width: 24px;
     height: 24px;
     margin-right: 10px;
 }
 
-.alert.slide-in {
-    right: 200px; /* Slide in */
+@keyframes slideIn {
+    from {
+        transform: translateX(15%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
-.alert.slide-out {
-    right: -300px; /* Slide out */
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(15%);
+        opacity: 0;
+    }
+}
+
+.slide-in {
+    animation: slideIn 0.5s ease-out forwards;
+}
+
+.slide-out {
+    animation: slideOut 0.5s ease-in forwards;
 }

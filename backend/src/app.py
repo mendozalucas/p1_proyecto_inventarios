@@ -118,10 +118,18 @@ def create_product():
     if results:
         return jsonify({"error": "El código de producto ya existe"}), 400
     else:
-        '''query = "INSERT INTO products (code_product, brand_product, model_product, category_product, color_product, price_product, current_stock) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        if data["category"] == 0:
+            category = "Other"
+        elif data["category"] == 1:
+            category = "Peripheral"
+        elif data["category"] == 2:
+            category = "Microprocessor"
+        elif data["category"] == 3:
+            category = "GPU"
+        query = "INSERT INTO products (code_product, brand_product, model_product, category_product, color_product, price_product, current_stock) VALUES (%s, %s, %s, %s, %s, %s, %s)"
         cursor.execute(query, (data["code"], data["brand"], data["model"], data["category"], data["color"], data["price"], data["stock"]))
         connection.commit() # Apply changes to the database permanently
-        connection.close()'''
+        connection.close()
         return jsonify({"message": "Producto creado exitosamente"}), 201
     
 if __name__ == '__main__':

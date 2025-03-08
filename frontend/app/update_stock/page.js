@@ -73,7 +73,7 @@ export default function UpdateStock() {
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
         crossOrigin="anonymous"
       />
-      <ModalFilter />
+      <ModalFilter setProducts={setProducts} />
       <div className="flex-grow-1 p-3">
         <h1>Update Stock</h1>
         <hr />
