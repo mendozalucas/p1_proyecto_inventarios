@@ -1,11 +1,82 @@
 "use client";
 import { useEffect, useState } from "react";
-/*import { getMensaje } from "../apicalls/apicalls";*/
-
 
 export default function AddProduct() {
-  return (
-    <>
+    const default_formdata = {
+        code: 0,
+        brand: "",
+        category: 0,
+        model: "",
+        color: "",
+        price: 0,
+        stock: 0,
+        stock_alert: 0
+    }
+
+    const [successMessage, setSuccessMessage] = useState(false);
+
+    const [formData, setFormData] = useState({        
+        code: 0,
+        brand: "",
+        category: 0,
+        model: "",
+        color: "",
+        price: 0,
+        stock: 0,
+        stock_alert: 0
+    });
+    
+    const resetValues = () => {
+        setFormData(default_formdata);
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: name === "category" ? Number(value) : value,
+        }));
+    };
+    
+    const handleSubmit = async () => {
+        if (
+            formData.code <= 0 ||
+            formData.brand.trim() === "" ||
+            formData.category === 0 ||
+            formData.model.trim() === "" ||
+            formData.color.trim() === "" ||
+            formData.price === 0 ||
+            formData.stock === 0
+          ) {
+            alert("All fields are required: Numbers cannot be negative and category must be different from \"-\"");
+            return;
+          }
+        try {
+            const response = await fetch("http://127.0.0.1:5000/create_product", {
+                method: "POST",
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+        
+            const message = await response.json();
+            console.log(message);
+            //setFormData(default_formdata);
+
+            setSuccessMessage(true); // Show alert
+            setTimeout(() => {
+                document.querySelector(".alert").classList.remove("slide-in");
+                document.querySelector(".alert").classList.add("slide-out");
+                setTimeout(() => setSuccessMessage(false), 500); // Hide the alert after the slide-out animation
+              }, 3000); // Hide the alert after 3 seconds
+        } catch (error) {
+            console.error("Error trying to create the product:", error);
+        }
+    };
+    
+    return (
+        <>
         <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
             rel="stylesheet"
@@ -16,211 +87,152 @@ export default function AddProduct() {
         <hr />
         <div className="container mt-3">
             <form action="#">
-                <div className="row g-3">
-                    <div className="col-md-6">
-                        <div className="form-group">
-                        <label className="d-block fs-14 text-black mb-2">Code</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            style={{ fontSize: 15 }}
-                            placeholder="Enter New Product Code"
-                        />
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="form-group">
-                        <label className="d-block fs-14 text-black mb-2">Category</label>
-                        <select className="form-control" style={{ fontSize: 15 }}>
-                            <option value={0}>-</option>
-                            <option value={1}>Peripheral</option>
-                            <option value={2}>Hardware</option>
-                            <option value={3}>Monitor</option>
-                        </select>
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="form-group">
-                        <label className="d-block fs-14 text-black mb-2">Model</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            style={{ fontSize: 15 }}
-                            placeholder="Enter Model Name"
-                        />
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="form-group">
-                        <label className="d-block fs-14 text-black mb-2">Price</label>
-                        <input
-                            type="number"
-                            className="form-control"
-                            style={{ fontSize: 15 }}
-                            placeholder="Enter Product Price"
-                        />
-                        </div>
-                    </div>
-                    <div className="col-md-12">
-                        <div className="form-group">
-                        <label className="d-block fs-14 text-black mb-2">Color</label>
-                        <div className="row">
-                            <div className="col-4">
-                            <div className="form-check">
-                                <input
-                                className="form-check-input"
-                                type="radio"
-                                name="color"
-                                defaultValue="Black"
-                                id="colorBlack"
-                                />
-                                <label className="form-check-label" htmlFor="colorBlack">
-                                Black
-                                </label>
-                            </div>
-                            <div className="form-check">
-                                <input
-                                className="form-check-input"
-                                type="radio"
-                                name="color"
-                                defaultValue="White"
-                                id="colorWhite"
-                                />
-                                <label className="form-check-label" htmlFor="colorWhite">
-                                White
-                                </label>
-                            </div>
-                            <div className="form-check">
-                                <input
-                                className="form-check-input"
-                                type="radio"
-                                name="color"
-                                defaultValue="Grey"
-                                id="colorGrey"
-                                />
-                                <label className="form-check-label" htmlFor="colorGrey">
-                                Grey
-                                </label>
-                            </div>
-                            </div>
-                            <div className="col-4">
-                            <div className="form-check">
-                                <input
-                                className="form-check-input"
-                                type="radio"
-                                name="color"
-                                defaultValue="Red"
-                                id="colorRed"
-                                />
-                                <label className="form-check-label" htmlFor="colorRed">
-                                Red
-                                </label>
-                            </div>
-                            <div className="form-check">
-                                <input
-                                className="form-check-input"
-                                type="radio"
-                                name="color"
-                                defaultValue="Blue"
-                                id="colorBlue"
-                                />
-                                <label className="form-check-label" htmlFor="colorBlue">
-                                Blue
-                                </label>
-                            </div>
-                            <div className="form-check">
-                                <input
-                                className="form-check-input"
-                                type="radio"
-                                name="color"
-                                defaultValue="Green"
-                                id="colorGreen"
-                                />
-                                <label className="form-check-label" htmlFor="colorGreen">
-                                Green
-                                </label>
-                            </div>
-                            </div>
-                            <div className="col-4">
-                            <div className="form-check">
-                                <input
-                                className="form-check-input"
-                                type="radio"
-                                name="color"
-                                defaultValue="Pink"
-                                id="colorPink"
-                                />
-                                <label className="form-check-label" htmlFor="colorPink">
-                                Pink
-                                </label>
-                            </div>
-                            <div className="form-check">
-                                <input
-                                className="form-check-input"
-                                type="radio"
-                                name="color"
-                                defaultValue="Yellow"
-                                id="colorYellow"
-                                />
-                                <label className="form-check-label" htmlFor="colorYellow">
-                                Yellow
-                                </label>
-                            </div>
-                            <div className="form-check">
-                                <input
-                                className="form-check-input"
-                                type="radio"
-                                name="color"
-                                defaultValue="Orange"
-                                id="colorOrange"
-                                />
-                                <label className="form-check-label" htmlFor="colorOrange">
-                                Orange
-                                </label>
-                            </div>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="form-group">
-                        <label className="d-block fs-14 text-black mb-2">Brand</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            style={{ fontSize: 15 }}
-                            placeholder="Enter Brand Name"
-                        />
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="form-group">
-                        <label className="d-block fs-14 text-black mb-2">Stock</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            style={{ fontSize: 15 }}
-                            placeholder="Enter Stock of the Product"
-                        />
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <button
-                        type="button"
-                        className="btn style-four w-100 d-block"
-                        data-bs-dismiss="modal"
-                        >
-                        Reset Values
-                        </button>
-                    </div>
-                    <div className="col-md-6">
-                        <button type="button" className="btn style-five w-100 d-block">
-                        Create
-                        </button>
-                    </div>
+            <div className="row g-3">
+                <div className="col-md-6">
+                <div className="form-group">
+                    <label className="d-block fs-14 text-black mb-2">Code</label>
+                    <input
+                    type="number"
+                    className="form-control"
+                    style={{ fontSize: 15 }}
+                    placeholder="Enter New Product Code"
+                    name="code"
+                    value={formData.code}
+                    onChange={handleChange}
+                    />
                 </div>
+                </div>
+                <div className="col-md-6">
+                <div className="form-group">
+                    <label className="d-block fs-14 text-black mb-2">Category</label>
+                    <select 
+                        className="form-control" 
+                        style={{ fontSize: 15 }}
+                        name="category"
+                        value={formData.category}
+                        onChange={handleChange}
+                    >
+                    <option value={0}>-</option>
+                    <option value={1}>Other</option>
+                    <option value={2}>Peripheral</option>
+                    <option value={3}>Microprocessor</option>
+                    <option value={4}>GPU</option>
+                    </select>
+                </div>
+                </div>
+                <div className="col-md-6">
+                <div className="form-group">
+                    <label className="d-block fs-14 text-black mb-2">Model</label>
+                    <input
+                    type="text"
+                    className="form-control"
+                    style={{ fontSize: 15 }}
+                    placeholder="Enter Model Name"
+                    name="model"
+                    value={formData.model}
+                    onChange={handleChange}
+                    />
+                </div>
+                </div>
+                <div className="col-md-6">
+                <div className="form-group">
+                    <label className="d-block fs-14 text-black mb-2">Price</label>
+                    <input
+                    type="number"
+                    className="form-control"
+                    style={{ fontSize: 15 }}
+                    placeholder="Enter Product Price"
+                    name="price"
+                    value={formData.price}
+                    onChange={handleChange}
+                    />
+                </div>
+                </div>
+                <div className="col-md-6">
+                <label>Color</label>
+                  <div className="row"> {/* map creates input and label for each color */}
+                    {["Black", "White", "Grey", "Red", "Blue", "Pink", "Yellow", "Orange", "Doesnt apply"].map(
+                      (color) => (
+                        <div key={color} className="col-4">
+                          <input
+                            type="radio"
+                            className="form-check-input"
+                            name="color"
+                            value={color}
+                            checked={formData.color === color}
+                            onChange={handleChange}
+                          /> {/* Checked: check if color is in the array and checks it*/}
+                          <label className="form-check-label ms-2">{color}</label>
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
+                <div className="col-md-6">
+                <div className="form-group">
+                    <label className="d-block fs-14 text-black mb-2">Stock</label>
+                    <input
+                    type="number"
+                    className="form-control"
+                    style={{ fontSize: 15 }}
+                    placeholder="Enter Stock of the Product"
+                    name="stock"
+                    value={formData.stock}
+                    onChange={handleChange}
+                    />
+                </div>
+                </div>
+                <div className="col-md-6">
+                <div className="form-group">
+                    <label className="d-block fs-14 text-black mb-2">Brand</label>
+                    <input
+                    type="text"
+                    className="form-control"
+                    style={{ fontSize: 15 }}
+                    placeholder="Enter Brand Name"
+                    name="brand"
+                    value={formData.brand}
+                    onChange={handleChange}
+                    />
+                </div>
+                </div>
+                <div className="col-md-6">
+                <div className="form-group">
+                    <label className="d-block fs-14 text-black mb-2">Stock alert</label>
+                    <input
+                    type="number"
+                    className="form-control"
+                    style={{ fontSize: 15 }}
+                    placeholder="Enter Stock Alert"
+                    name="stock_alert"
+                    value={formData.stock_alert}
+                    onChange={handleChange}
+                    />
+                </div>
+                </div>
+                <div className="col-md-6">
+                <button
+                    type="button"
+                    className="btn style-four w-100 d-block"
+                    onClick={resetValues}
+                >
+                    Reset Values
+                </button>
+                </div>
+                <div className="col-md-6">
+                    <button type="button" className="btn btn-primary w-100" onClick={handleSubmit}>
+                    Filter
+                    </button>
+                </div>
+            </div>
             </form>
+            {successMessage && (
+            <div className="alert alert-success mt-3 slide-in" role="alert">
+                <img src="tick-circle-svgrepo-com.svg" alt="Success" className="me-2" />
+                Product created successfully!
+            </div>
+            )}
         </div>
-    </>
-  );
+        </>
+    );
 }

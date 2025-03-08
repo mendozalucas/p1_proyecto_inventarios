@@ -35,7 +35,7 @@ export default function UpdateStock() {
         }))
         .filter((update) => update.new_stock !== update.old_stock); // 🔹 Usamos update.old_stock en vez de product.current_stock
   
-      if (updates.length === 0) return; // No hacer request si no hay cambios
+      if (updates.length === 0) return; // If the user didn't change any quantity, return
   
       const response = await fetch("http://127.0.0.1:5000/update_stock", {
         method: "POST",

@@ -119,3 +119,32 @@ background: #ff9800;
 font-weight: bold;
 color: #1e1e2f !important;
 }
+
+/* alert styles */
+.alert {
+    position: fixed;
+    top: 20px;
+    right: -300px; /* Start off-screen */
+    width: 250px;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    background-color: #d4edda;
+    color: #155724;
+    transition: right 0.5s ease-in-out;
+}
+
+.alert img {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.alert.slide-in {
+    right: 200px; /* Slide in */
+}
+
+.alert.slide-out {
+    right: -300px; /* Slide out */
+}

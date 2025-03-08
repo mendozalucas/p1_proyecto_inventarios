@@ -105,6 +105,24 @@ def update_stock():
         print(e)
     else:
         return jsonify({"message": "Stock actualizado exitosamente"}), 200
-
+    
+@app.route("/create_product", methods=["POST"])
+def create_product():
+    data = request.json
+    
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)  # Retrieve results as dictionaries
+    cursor.execute("SELECT * FROM products WHERE %s = code_product", [data["code"]])  # Execute the query with the parameters
+    results = cursor.fetchall()  # Fetch all results
+    
+    if results:
+        return jsonify({"error": "El código de producto ya existe"}), 400
+    else:
+        '''query = "INSERT INTO products (code_product, brand_product, model_product, category_product, color_product, price_product, current_stock) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        cursor.execute(query, (data["code"], data["brand"], data["model"], data["category"], data["color"], data["price"], data["stock"]))
+        connection.commit() # Apply changes to the database permanently
+        connection.close()'''
+        return jsonify({"message": "Producto creado exitosamente"}), 201
+    
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)  # listen on all IPs on port 5000
