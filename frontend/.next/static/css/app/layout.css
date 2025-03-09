@@ -126,11 +126,11 @@ color: #1e1e2f !important;
 /* alert styles */
 .alert {
     position: fixed;
-    top: 20px;
     right: -1045px; /* Start off-screen */
     width: 250px;
-    padding: 15px;
+    padding: 10px;
     border-radius: 8px;
+    margin-bottom:5px;
     display: flex;
     align-items: center;
     background-color: #d4edda;

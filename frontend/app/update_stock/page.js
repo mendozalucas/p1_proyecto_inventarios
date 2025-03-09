@@ -24,6 +24,60 @@ export default function UpdateStock() {
     }));
   };
 
+  // Delete product by code
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [errorDeleting, setErrorDeleting] = useState(false);
+  const [remainingTime, setRemainingTime] = useState(0);
+  const handleDelete = async (e) => {
+    if (isDeleting) {
+      setErrorDeleting(true);
+      return
+    };
+    
+    setIsDeleting(true);
+    setErrorDeleting(false);
+    let timeLeft = 5;
+    setRemainingTime(timeLeft);
+
+    const code = e.currentTarget.getAttribute("data-code");
+
+    if (!code) {
+        console.error("Error: No code found for deletion");
+        setIsDeleting(false);
+        return;
+    }
+
+    console.log("Deleting:", code);
+    
+    try {
+        const response = await fetch("http://127.0.0.1:5000/delete_item", {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code }),
+        });
+
+        if (!response.ok) throw new Error("Error trying to delete the product");
+
+        setProducts((prevProducts) =>
+            prevProducts.filter((product) => product.code_product !== parseInt(code))
+        );
+
+        console.log("Product deleted successfully!");
+    } catch (error) {
+        console.error("Error trying to delete the product:", error);
+    }
+
+    // Temporizador para actualizar el tiempo restante
+    const timer = setInterval(() => {
+      timeLeft -= 1;
+      setRemainingTime(timeLeft);
+      if (timeLeft <= 0) {
+          clearInterval(timer);
+          setIsDeleting(false);
+          setErrorDeleting(false);
+      }
+    }, 1000);
+  };
   // Función para aplicar los cambios y resetear valores
   const handleApplyChanges = async () => {
     try {
@@ -129,9 +183,9 @@ export default function UpdateStock() {
                     </td>
                     <td>${(product.current_stock * parseFloat(product.price_product)).toFixed(2)}</td>
                     <td>
-                      <button className="invisible-button">
-                        <img className="svg-to-red" src="x-circle.svg" alt="Delete" id={product.code_product} />
-                      </button>
+                    <button className="invisible-button" onClick={handleDelete} data-code={product.code_product}>
+                        <img className="svg-to-red" src="x-circle.svg" alt="Delete" />
+                    </button>
                     </td>
                   </tr>
                 ))}
@@ -141,6 +195,12 @@ export default function UpdateStock() {
         <button className="btn btn-primary mt-3" type="button" onClick={handleApplyChanges}>
           Apply Changes
         </button>
+        {errorDeleting && (
+          <div className="alert alert-danger mt-3 slide-in" role="alert" style={{ height: 70}}>
+              <img src="cross-circle-svgrepo-com.svg" alt="Error" className="me-2" />
+              Wait {remainingTime} seconds before trying again.
+          </div>
+        )}
     </div>
     </>
   );

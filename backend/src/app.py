@@ -109,6 +109,7 @@ def update_stock():
 @app.route("/create_product", methods=["POST"])
 def create_product():
     data = request.json
+    category = ""
     
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)  # Retrieve results as dictionaries
@@ -127,10 +128,34 @@ def create_product():
         elif data["category"] == 3:
             category = "GPU"
         query = "INSERT INTO products (code_product, brand_product, model_product, category_product, color_product, price_product, current_stock) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-        cursor.execute(query, (data["code"], data["brand"], data["model"], data["category"], data["color"], data["price"], data["stock"]))
+        cursor.execute(query, (data["code"], data["brand"], data["model"], category, data["color"], data["price"], data["stock"]))
         connection.commit() # Apply changes to the database permanently
         connection.close()
         return jsonify({"message": "Producto creado exitosamente"}), 201
+    
+@app.route("/delete_item", methods=["DELETE"])
+def delete_item():
+    data = request.json
+    code = data.get("code")
+
+    if not code:
+        return jsonify({"error": "Invalid request: No code provided"}), 400
+
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    
+    cursor.execute("SELECT * FROM products WHERE code_product = %s", (code,))  # Asegurar formato correcto
+    results = cursor.fetchall()
+
+    if results:
+        cursor.execute("DELETE FROM products WHERE code_product = %s", (code,))
+        connection.commit()
+        connection.close()
+        
+        return jsonify({"message": "Product deleted successfully"}), 200
+    else:
+        connection.close()
+        return jsonify({"error": "The code doesn't exist"}), 400
     
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)  # listen on all IPs on port 5000
