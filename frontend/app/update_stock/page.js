@@ -5,9 +5,6 @@ import FilterSearch from "../../components/filter_search";
 
 
 export default function UpdateStock() {
-  const [products, setProducts] = useState([]); // Lista de productos
-  const [stockUpdates, setStockUpdates] = useState({}); // Estado para cambios de stock
-
   // Función para incrementar cantidad
   const incrementQuantity = (index) => {
     setStockUpdates((prev) => ({
@@ -78,19 +75,22 @@ export default function UpdateStock() {
       }
     }, 1000);
   };
+
+  const [products, setProducts] = useState([]); // Lista de productos
+  const [stockUpdates, setStockUpdates] = useState({}); // Estado para cambios de stock
   // Función para aplicar los cambios y resetear valores
   const handleApplyChanges = async () => {
     try {
-      const updates = products
-        .map((product, index) => ({
+      const updates = products.map((product) => ({
           code_product: product.code_product,
-          new_stock: product.current_stock + (stockUpdates[index] || 0),
+          new_stock: product.current_stock + (stockUpdates[product.code_product] || 0),
           old_stock: product.current_stock,  // 🔹 Guardamos el stock original
         }))
         .filter((update) => update.new_stock !== update.old_stock); // 🔹 Usamos update.old_stock en vez de product.current_stock
   
+      console.log("Updating stock:", updates);
       if (updates.length === 0) return; // If the user didn't change any quantity, return
-  
+
       const response = await fetch("http://127.0.0.1:5000/update_stock", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -100,9 +100,9 @@ export default function UpdateStock() {
       if (!response.ok) throw new Error("Error en la actualización");
   
       // Refrescar la lista de productos con stock actualizado
-      const updatedProducts = products.map((product, index) => ({
+      const updatedProducts = products.map((product) => ({
         ...product,
-        current_stock: product.current_stock + (stockUpdates[index] || 0),
+        current_stock: product.current_stock + (stockUpdates[product.code_product] || 0),
       }));
   
       setProducts(updatedProducts);
@@ -119,6 +119,10 @@ export default function UpdateStock() {
     .catch((error) => console.error("Error al obtener productos:", error));
   }, []);
 
+  const [filteredProducts, setFilteredProducts] = useState(products);
+  useEffect(() => {
+    setFilteredProducts(products);
+  }, [products]); // if the products change, update the filtered products
   return (
     <>
       <link
@@ -131,7 +135,7 @@ export default function UpdateStock() {
       <div className="flex-grow-1 p-3">
         <h1>Update Stock</h1>
         <hr />
-        <FilterSearch />
+        <FilterSearch products={products} setFilteredProducts={setFilteredProducts} />
           <div style={{ maxHeight: "500px", overflowY: "auto", border: "1px solid #ddd" }}>
             <table className="table table-hover modern-table text-secondary">
               <thead className="table-dark">
@@ -148,7 +152,7 @@ export default function UpdateStock() {
                 </tr>
               </thead>
               <tbody>
-                {products.map((product, index) => (
+                {filteredProducts.map((product) => (
                   <tr key={product.code_product}>
                     <th scope="row">{product.code_product}</th>
                     <td>{product.category_product}</td>
@@ -157,11 +161,11 @@ export default function UpdateStock() {
                     <td>{product.color_product}</td>
                     <td>{product.current_stock}</td>
                     <td>
-                      <div className="input-group">
+                      <div className="input-group" style={{ width: 125 }}>
                         <button
                           className="btn btn-outline-danger btn-sm"
                           type="button"
-                          onClick={() => decrementQuantity(index)}
+                          onClick={() => decrementQuantity(product.code_product)}
                         >
                           <img src="dash.svg" alt="Decrement" />
                         </button>
@@ -169,13 +173,13 @@ export default function UpdateStock() {
                           type="text"
                           style={{ width: 40, height: 30, fontSize: 20 }}
                           className="form-control text-center"
-                          value={stockUpdates[index] || 0} // Mostramos el estado actualizado
+                          value={stockUpdates[product.code_product] || 0} // Mostramos el estado actualizado
                           readOnly
                         />
                         <button
                           className="btn btn-outline-success btn-sm"
                           type="button"
-                          onClick={() => incrementQuantity(index)}
+                          onClick={() => incrementQuantity(product.code_product)}
                         >
                           <img src="plus.svg" alt="Increment" />
                         </button>
@@ -192,7 +196,7 @@ export default function UpdateStock() {
               </tbody>
             </table>
           </div>
-        <button className="btn btn-primary mt-3" type="button" onClick={handleApplyChanges}>
+        <button className="btn btn-primary mt-3" type="button" onClick={handleApplyChanges} disabled={Object.keys(stockUpdates).length === 0}> {/*Desable button if there are no changes*/}
           Apply Changes
         </button>
         {errorDeleting && (

@@ -41,6 +41,12 @@ export default function Home() {
     .catch((error) => console.error("Error al obtener productos:", error));
   }, []);
 
+  
+  const [filteredProducts, setFilteredProducts] = useState(products);
+  useEffect(() => {
+    setFilteredProducts(products);
+  }, [products]); // if the products change, update the filtered products
+
   return (
     <>
       <link
@@ -53,7 +59,7 @@ export default function Home() {
       <div className="flex-grow-1 p-3">
         <h1>Product List</h1>
         <hr />
-        <FilterSearch />
+        <FilterSearch products={products} setFilteredProducts={setFilteredProducts} />
         <div style={{ maxHeight: "500px", overflowY: "auto", border: "1px solid #ddd" }}>
           <table className="table table-hover modern-table text-secondary">
             <thead className="table-dark">
@@ -70,7 +76,7 @@ export default function Home() {
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
+              {filteredProducts.map((product) => (
                 <tr key={product.code_product}>
                   <th scope="row">{product.code_product}</th>
                   <td>{product.category_product}</td>

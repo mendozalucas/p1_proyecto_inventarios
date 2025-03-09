@@ -1,4 +1,19 @@
-export default function FilterSearch() {
+"use client";
+import { useState } from "react";
+
+const FilterSearch = ({ products, setFilteredProducts }) => {
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const handleSearch = (e) => {
+        const value = e.target.value;
+        setSearchTerm(value);
+    
+        // Filter products by code while typing
+        const filtered = products.filter((product) => String(product.code_product).includes(value)
+        );
+        setFilteredProducts(filtered);
+    };
+      
     return (
         <>
             <div className="d-flex align-items-center mb-3">
@@ -18,16 +33,13 @@ export default function FilterSearch() {
                     placeholder="Search by Code..."
                     aria-label="Search"
                     aria-describedby="button-search"
+                    value={searchTerm}
+                    onChange={handleSearch}
                 />
-                <button
-                    className="btn btn-outline-secondary btn-lg"
-                    type="button"
-                    id="button-search"
-                >
-                    Search
-                </button>
                 </div>
             </div>
         </>
     )
 }
+
+export default FilterSearch;
