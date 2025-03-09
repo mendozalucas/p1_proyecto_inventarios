@@ -1,4 +1,3 @@
-import ModalLogin from '../components/modal_login';
 import Sidebar from '../components/sidebar';
 
 export const metadata = {
@@ -21,15 +20,11 @@ export default function RootLayout({ children, params }) {
         />
       </head>
       <body className="bg-light">
-        <ModalLogin />
         <div className="container-fluid">
           <div className="row">
-            {/* Sidebar en columna izquierda */}
             <div className="col-md-3 col-lg-2 bg-dark text-white vh-100 p-3">
               <Sidebar />
             </div>
-            
-            {/* Contenido en columna derecha con espaciado */}
             <div className="col-md-9 col-lg-10 p-4">{children}</div>
           </div>
         </div>

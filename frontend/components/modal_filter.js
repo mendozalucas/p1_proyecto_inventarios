@@ -6,7 +6,7 @@ export default function ModalFilter( {setProducts}) {
     // Dynamically import the Bootstrap JavaScript
     import('bootstrap/dist/js/bootstrap.bundle.min.js')
       .then(() => {
-        console.log('Bootstrap JS loaded');
+        console.log('loaded');
       })
       .catch(err => {
         console.error('Failed to load Bootstrap JS', err);

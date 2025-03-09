@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Contact from "../../components/contact";
 
 export default function AddProduct() {
     const default_formdata = {
@@ -107,167 +108,172 @@ export default function AddProduct() {
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
             crossOrigin="anonymous"
         />
-        <h1>Add Product</h1>
-        <hr />
-        <div className="container mt-3">
-            <form action="#">
-            <div className="row g-3">
-                <div className="col-md-6">
-                <div className="form-group">
-                    <label className="d-block fs-14 text-black mb-2">Code</label>
-                    <input
-                    type="number"
-                    className="form-control"
-                    style={{ fontSize: 15 }}
-                    placeholder="Enter New Product Code"
-                    name="code"
-                    value={formData.code}
-                    onChange={handleChange}
-                    />
-                </div>
-                </div>
-                <div className="col-md-6">
-                <div className="form-group">
-                    <label className="d-block fs-14 text-black mb-2">Category</label>
-                    <select 
-                        className="form-control" 
-                        style={{ fontSize: 15 }}
-                        name="category"
-                        value={formData.category}
-                        onChange={handleChange}
-                    >
-                    <option value={0}>-</option>
-                    <option value={1}>Other</option>
-                    <option value={2}>Peripheral</option>
-                    <option value={3}>Microprocessor</option>
-                    <option value={4}>GPU</option>
-                    </select>
-                </div>
-                </div>
-                <div className="col-md-6">
-                <div className="form-group">
-                    <label className="d-block fs-14 text-black mb-2">Model</label>
-                    <input
-                    type="text"
-                    className="form-control"
-                    style={{ fontSize: 15 }}
-                    placeholder="Enter Model Name"
-                    name="model"
-                    value={formData.model}
-                    onChange={handleChange}
-                    />
-                </div>
-                </div>
-                <div className="col-md-6">
-                <div className="form-group">
-                    <label className="d-block fs-14 text-black mb-2">Price</label>
-                    <input
-                    type="number"
-                    className="form-control"
-                    style={{ fontSize: 15 }}
-                    placeholder="Enter Product Price"
-                    name="price"
-                    value={formData.price}
-                    onChange={handleChange}
-                    />
-                </div>
-                </div>
-                <div className="col-md-6">
-                <label>Color</label>
-                  <div className="row"> {/* map creates input and label for each color */}
-                    {["Black", "White", "Grey", "Red", "Blue", "Pink", "Yellow", "Orange", "Doesnt apply"].map(
-                      (color) => (
-                        <div key={color} className="col-4">
-                          <input
-                            type="radio"
-                            className="form-check-input"
-                            name="color"
-                            value={color}
-                            checked={formData.color === color}
-                            onChange={handleChange}
-                          /> {/* Checked: check if color is in the array and checks it*/}
-                          <label className="form-check-label ms-2">{color}</label>
-                        </div>
-                      )
-                    )}
-                  </div>
-                </div>
-                <div className="col-md-6">
-                <div className="form-group">
-                    <label className="d-block fs-14 text-black mb-2">Stock</label>
-                    <input
-                    type="number"
-                    className="form-control"
-                    style={{ fontSize: 15 }}
-                    placeholder="Enter Stock of the Product"
-                    name="stock"
-                    value={formData.stock}
-                    onChange={handleChange}
-                    />
-                </div>
-                </div>
-                <div className="col-md-6">
-                <div className="form-group">
-                    <label className="d-block fs-14 text-black mb-2">Brand</label>
-                    <input
-                    type="text"
-                    className="form-control"
-                    style={{ fontSize: 15 }}
-                    placeholder="Enter Brand Name"
-                    name="brand"
-                    value={formData.brand}
-                    onChange={handleChange}
-                    />
-                </div>
-                </div>
-                <div className="col-md-6">
-                <div className="form-group">
-                    <label className="d-block fs-14 text-black mb-2">Stock alert</label>
-                    <input
-                    type="number"
-                    className="form-control"
-                    style={{ fontSize: 15 }}
-                    placeholder="Enter Stock Alert"
-                    name="stock_alert"
-                    value={formData.stock_alert}
-                    onChange={handleChange}
-                    />
-                </div>
-                </div>
-                <div className="col-md-6">
-                <button
-                    type="button"
-                    className="btn style-four w-100 d-block"
-                    onClick={resetValues}
-                >
-                    Reset Values
-                </button>
-                </div>
-                <div className="col-md-6">
-                    <button type="button" className="btn btn-primary w-100" onClick={handleSubmit}>
-                    Create Product
-                    </button>
-                </div>
+        <div className="flex-grow-1 p-3">
+            <div className="d-flex align-items-center justify-content-between">
+            <h1>Add Product</h1>
+            <Contact />
             </div>
-            </form>
-            {successMessage && (
-                <div className="alert alert-success mt-3 slide-in" role="alert">
-                    <img src="tick-circle-svgrepo-com.svg" alt="Success" className="me-2" />
-                    Product created successfully!
+            <hr />
+            <div className="container mt-3">
+                <form action="#">
+                <div className="row g-3">
+                    <div className="col-md-6">
+                    <div className="form-group">
+                        <label className="d-block fs-14 text-black mb-2">Code</label>
+                        <input
+                        type="number"
+                        className="form-control"
+                        style={{ fontSize: 15 }}
+                        placeholder="Enter New Product Code"
+                        name="code"
+                        value={formData.code}
+                        onChange={handleChange}
+                        />
+                    </div>
+                    </div>
+                    <div className="col-md-6">
+                    <div className="form-group">
+                        <label className="d-block fs-14 text-black mb-2">Category</label>
+                        <select 
+                            className="form-control" 
+                            style={{ fontSize: 15 }}
+                            name="category"
+                            value={formData.category}
+                            onChange={handleChange}
+                        >
+                        <option value={0}>-</option>
+                        <option value={1}>Other</option>
+                        <option value={2}>Peripheral</option>
+                        <option value={3}>Microprocessor</option>
+                        <option value={4}>GPU</option>
+                        </select>
+                    </div>
+                    </div>
+                    <div className="col-md-6">
+                    <div className="form-group">
+                        <label className="d-block fs-14 text-black mb-2">Model</label>
+                        <input
+                        type="text"
+                        className="form-control"
+                        style={{ fontSize: 15 }}
+                        placeholder="Enter Model Name"
+                        name="model"
+                        value={formData.model}
+                        onChange={handleChange}
+                        />
+                    </div>
+                    </div>
+                    <div className="col-md-6">
+                    <div className="form-group">
+                        <label className="d-block fs-14 text-black mb-2">Price</label>
+                        <input
+                        type="number"
+                        className="form-control"
+                        style={{ fontSize: 15 }}
+                        placeholder="Enter Product Price"
+                        name="price"
+                        value={formData.price}
+                        onChange={handleChange}
+                        />
+                    </div>
+                    </div>
+                    <div className="col-md-6">
+                    <label>Color</label>
+                    <div className="row"> {/* map creates input and label for each color */}
+                        {["Black", "White", "Grey", "Red", "Blue", "Pink", "Yellow", "Orange", "Doesnt apply"].map(
+                        (color) => (
+                            <div key={color} className="col-4">
+                            <input
+                                type="radio"
+                                className="form-check-input"
+                                name="color"
+                                value={color}
+                                checked={formData.color === color}
+                                onChange={handleChange}
+                            /> {/* Checked: check if color is in the array and checks it*/}
+                            <label className="form-check-label ms-2">{color}</label>
+                            </div>
+                        )
+                        )}
+                    </div>
+                    </div>
+                    <div className="col-md-6">
+                    <div className="form-group">
+                        <label className="d-block fs-14 text-black mb-2">Stock</label>
+                        <input
+                        type="number"
+                        className="form-control"
+                        style={{ fontSize: 15 }}
+                        placeholder="Enter Stock of the Product"
+                        name="stock"
+                        value={formData.stock}
+                        onChange={handleChange}
+                        />
+                    </div>
+                    </div>
+                    <div className="col-md-6">
+                    <div className="form-group">
+                        <label className="d-block fs-14 text-black mb-2">Brand</label>
+                        <input
+                        type="text"
+                        className="form-control"
+                        style={{ fontSize: 15 }}
+                        placeholder="Enter Brand Name"
+                        name="brand"
+                        value={formData.brand}
+                        onChange={handleChange}
+                        />
+                    </div>
+                    </div>
+                    <div className="col-md-6">
+                    <div className="form-group">
+                        <label className="d-block fs-14 text-black mb-2">Stock alert</label>
+                        <input
+                        type="number"
+                        className="form-control"
+                        style={{ fontSize: 15 }}
+                        placeholder="Enter Stock Alert"
+                        name="stock_alert"
+                        value={formData.stock_alert}
+                        onChange={handleChange}
+                        />
+                    </div>
+                    </div>
+                    <div className="col-md-6">
+                    <button
+                        type="button"
+                        className="btn style-four w-100 d-block"
+                        onClick={resetValues}
+                    >
+                        Reset Values
+                    </button>
+                    </div>
+                    <div className="col-md-6">
+                        <button type="button" className="btn btn-primary w-100" onClick={handleSubmit}>
+                        Create Product
+                        </button>
+                    </div>
                 </div>
-            )}
-            {errorMessage && (
-                <div className="alert alert-danger mt-3 slide-in" role="alert">
-                    <img src="cross-circle-svgrepo-com.svg" alt="Error" className="me-2" />
-                    Please fill in all required fields.
-                </div>
-            )}
-            {errorMessage2 && (
-                <div className="alert alert-danger mt-3 slide-in" role="alert">
-                    <img src="cross-circle-svgrepo-com.svg" alt="Error" className="me-2" />
-                    A product with the same code already exists.
-                </div>
-            )}
+                </form>
+                {successMessage && (
+                    <div className="alert alert-success mt-3 slide-in" role="alert">
+                        <img src="tick-circle-svgrepo-com.svg" alt="Success" className="me-2" />
+                        Product created successfully!
+                    </div>
+                )}
+                {errorMessage && (
+                    <div className="alert alert-danger mt-3 slide-in" role="alert">
+                        <img src="cross-circle-svgrepo-com.svg" alt="Error" className="me-2" />
+                        Please fill in all required fields.
+                    </div>
+                )}
+                {errorMessage2 && (
+                    <div className="alert alert-danger mt-3 slide-in" role="alert">
+                        <img src="cross-circle-svgrepo-com.svg" alt="Error" className="me-2" />
+                        A product with the same code already exists.
+                    </div>
+                )}
+            </div>
         </div>
         </>
     );

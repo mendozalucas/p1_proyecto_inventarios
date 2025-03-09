@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import ModalFilter from "../components/modal_filter";
 import FilterSearch from "../components/filter_search";
+import Contact from "../components/contact";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -57,7 +58,10 @@ export default function Home() {
       />
       <ModalFilter setProducts={setProducts} />
       <div className="flex-grow-1 p-3">
-        <h1>Product List</h1>
+        <div className="d-flex align-items-center justify-content-between">
+          <h1>Product List</h1>
+          <Contact />
+        </div>
         <hr />
         <FilterSearch products={products} setFilteredProducts={setFilteredProducts} />
         <div style={{ maxHeight: "500px", overflowY: "auto", border: "1px solid #ddd" }}>
