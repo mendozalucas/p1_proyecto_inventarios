@@ -1,7 +1,7 @@
 import Sidebar from '../components/sidebar';
 
 export const metadata = {
-  title: 'Sistema de inventario',
+  title: 'Gestion de inventarios',
   description: 'Next.js',
 };
 
@@ -11,7 +11,7 @@ export default function RootLayout({ children, params }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>demo</title>
+        <title>Gestion de inventarios</title>
         <link
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet"
