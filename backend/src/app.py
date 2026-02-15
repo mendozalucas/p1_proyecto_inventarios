@@ -3,6 +3,7 @@ from flask_cors import CORS
 from config import get_db_connection
 
 app = Flask(__name__)
+
 CORS(app)
 
 @app.route('/mensaje', methods=['GET'])
