@@ -102,6 +102,7 @@ background: #f8f9fa;
     padding: 30px 20px;
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .nav-item .nav-link {
